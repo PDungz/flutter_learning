@@ -23,9 +23,10 @@ class ForecastTwoToSing extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      margin: const EdgeInsets.only(bottom: 80),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: const Color.fromARGB(14, 218, 216, 216).withOpacity(0.5),
+        color: const Color.fromARGB(14, 141, 138, 138).withOpacity(0.4),
       ),
       child: Column(
         children: [
@@ -132,12 +133,16 @@ class WeahterTemperature extends StatelessWidget {
           onPressed: () {},
           icon: const Icon(
             CupertinoIcons.bars,
+            color: Colors.white,
           ),
         ),
         title: Container(
           margin: const EdgeInsets.only(right: 62),
           alignment: Alignment.center,
-          child: Text(local),
+          child: Text(
+            local,
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
       ),
       body: Stack(
@@ -209,8 +214,9 @@ class WeatherDataOneToSing extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: const Color.fromARGB(14, 218, 216, 216).withOpacity(0.5)),
+            borderRadius: BorderRadius.circular(8),
+            color: const Color.fromARGB(14, 141, 138, 138).withOpacity(0.4),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: weatherData.map((mapData) {
