@@ -65,7 +65,7 @@ class _AuthState extends State<Auth> {
                   hintText: 'Username, email or mobile number',
                   hintStyle: TextStyle(color: Colors.grey.withOpacity(0.5)),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -82,26 +82,19 @@ class _AuthState extends State<Auth> {
                   hintText: 'Password',
                   hintStyle: TextStyle(color: Colors.grey.withOpacity(0.5)),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide.none,
                   ),
                   suffixIcon: Material(
-                    color: Colors.transparent,
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: isPassWordShow
                           ? IconButton(
                               onPressed: onCheckPassWord,
-                              icon: const Icon(
-                                CupertinoIcons.eye_fill,
-                                color: Colors.grey,
-                              ))
+                              icon: const Icon(CupertinoIcons.eye_fill))
                           : IconButton(
                               onPressed: onCheckPassWord,
-                              color: Colors.grey,
-                              icon: const Icon(
-                                CupertinoIcons.eye_slash_fill,
-                              )),
+                              icon: const Icon(CupertinoIcons.eye_slash_fill)),
                     ),
                   ),
                 ),
