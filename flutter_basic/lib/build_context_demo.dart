@@ -33,9 +33,25 @@ class MyHomePage extends StatelessWidget {
         title: const Text('SnackBar Example'),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () => _openDrawer(context),
-          child: const Text('Show SnackBar'),
+        child: Column(
+          children: [
+            Builder(builder: (context) {
+              return ElevatedButton(
+                onPressed: () => _openDrawer(context),
+                child: const Text('Show SnackBar'),
+              );
+            }),
+            Builder(builder: (context) {
+              return ElevatedButton(
+                  onPressed: () {
+                    Scaffold.of(context).showBottomSheet((_) => Container(
+                          height: 200,
+                          color: Colors.red,
+                        ));
+                  },
+                  child: const Text('Open Modal Bottom Sheet'));
+            })
+          ],
         ),
       ),
       drawer: const DrawerSection(),
