@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_basic/homework/weathers/components/card_weather.dart';
+import 'package:flutter_basic/flutter_with_container_row_column_stack_wrap/homework/weathers/components/card_weather.dart';
 
 class WeatherPage extends StatelessWidget {
   const WeatherPage({super.key});
