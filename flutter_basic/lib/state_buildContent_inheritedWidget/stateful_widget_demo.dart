@@ -21,7 +21,7 @@
 //! StatefulWidget gồm hai lớp chính:
 
 import 'package:flutter/material.dart';
-import 'package:flutter_basic/stateful_widget_life_cycle.dart';
+import 'package:flutter_basic/state_buildContent_inheritedWidget/stateful_widget_life_cycle.dart';
 
 //?   Lớp StatefulWidget:
 //?     - Là Class chính kế thừa từ StatefulWidget

@@ -6,7 +6,7 @@
 // và cho phép truy cập đến các widget tổ tiên, trạng thái, và dữ liệu.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_basic/drawer_section_of_scaffold.dart';
+import 'package:flutter_basic/state_buildContent_inheritedWidget/drawer_section_of_scaffold.dart';
 
 void main() {
   runApp(const MyApp());

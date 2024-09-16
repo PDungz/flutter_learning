@@ -7,7 +7,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:flutter_basic/stateful_widget_demo.dart';
+import 'package:flutter_basic/state_buildContent_inheritedWidget/stateful_widget_demo.dart';
 
 void main(List<String> args) {
   runApp(const MyApp());
