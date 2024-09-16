@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_basic/homework/weahter_temperature.dart';
+import 'package:flutter_basic/basic_display_widgets/homework/weahter_temperature.dart';
 
 void main(List<String> args) {
   runApp(const MyApp());
