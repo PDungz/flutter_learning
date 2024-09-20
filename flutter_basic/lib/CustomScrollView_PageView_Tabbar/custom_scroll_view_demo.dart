@@ -52,7 +52,7 @@ class MyCustomScrollView extends StatelessWidget {
             //? pinned
             //  Nếu đặt là true, app bar sẽ được giữ cố định ở đầu màn hình khi cuộn xuống.
             //  Nếu là false, app bar sẽ biến mất khi cuộn.
-            pinned: false,
+            pinned: true,
             //? floating
             //  Nếu đặt là true, app bar sẽ hiển thị lại khi người dùng cuộn lên,
             //  ngay cả khi app bar đã cuộn ra ngoài màn hình. Điều này tạo ra một hiệu ứng "nổi" cho app bar.
