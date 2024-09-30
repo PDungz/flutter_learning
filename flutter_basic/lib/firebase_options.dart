@@ -83,4 +83,5 @@ class DefaultFirebaseOptions {
     authDomain: 'fir-tutorial-d4b6f.firebaseapp.com',
     storageBucket: 'fir-tutorial-d4b6f.appspot.com',
   );
+
 }
