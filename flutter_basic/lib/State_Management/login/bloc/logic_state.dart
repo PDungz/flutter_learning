@@ -11,6 +11,8 @@ class FailedLoginState extends LoginState {
   });
 }
 
+class LoginWithThirdPartyLoading extends LoginState {}
+
 class InitialLoginState extends LoginState {}
 
 class LoadingLoginState extends LoginState {}
