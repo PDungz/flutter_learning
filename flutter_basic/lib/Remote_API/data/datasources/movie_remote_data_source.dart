@@ -1,44 +1,37 @@
-import 'dart:convert';
-import 'package:flutter_basic/Remote_API/core/utils/dot_env_util.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_basic/Remote_API/data/models/movie_model.dart';
-import 'package:http/http.dart' as http;
 
-// const apiKey =
-//     "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4YTI1NTA5OTFlNGYzN2M0NTQxZGNhNzY4MWI2OTMwNiIsIm5iZiI6MTcyODAzNzE4Ni40NjA5NTUsInN1YiI6IjY2ZmQxZWNmYzZmYmIyZjBjZGYyM2QyYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EcYvxzToP5ipX3iLjbQrWJBETp7qxsxhmmsj50nwI-4";
+import '../../core/services/logger_service.dart';
+import '../../domain/entities/movie.dart';
 
 abstract class MovieRemoteDataSource {
-  Future<List<MovieModel>> getMovies();
+  Future<List<Movie>> getMovies();
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
-  final http.Client client;
-  MovieRemoteDataSourceImpl({required this.client});
+  final Dio dio;
+
+  MovieRemoteDataSourceImpl({required this.dio});
 
   @override
-  Future<List<MovieModel>> getMovies() async {
-    final apiKey = DotEnvUtil.apiKey;
-    final host = DotEnvUtil.hostApi;
-    final apiVersion = DotEnvUtil.apiVesion;
+  Future<List<Movie>> getMovies() async {
+    final queryParams = {'language': 'en-US', 'page': 1};
 
-    var headers = {
-      'Authorization': 'Bearer $apiKey',
-      'Accept': 'application/json'
-    };
-    var queryParams = {'language': 'en-US', 'page': '1'};
-    // var url = Uri.parse(
-    //     'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1');
-    // var url =
-    //     Uri.http("api.themoviedb.org", "/3/movie/now_playing", queryParams);
-    var url = Uri.http(host, "$apiVersion/movie/now_playing", queryParams);
-
-    final response = await client.get(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      final List<dynamic> moviesJson = json.decode(response.body)['results'];
+    try {
+      final result =
+          await dio.get("/movie/now_playing", queryParameters: queryParams);
+      final List<dynamic> moviesJson = result.data['results'];
       //! Sử dụng Model trong DataSource
       return moviesJson.map((json) => MovieModel.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load movies');
     }
+    //! Error Handling
+    on DioException catch (e) {
+      printE(
+          "[DioException] error type: ${e.type}, error message: ${e.message}");
+    } catch (e) {
+      printE("Unknown error: ${e.toString()}");
+    }
+
+    return [];
   }
 }
