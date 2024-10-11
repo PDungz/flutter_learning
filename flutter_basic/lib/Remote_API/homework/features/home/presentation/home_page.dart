@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_basic/Remote_API/homework/core/apis/dio_client.dart';
 import 'package:flutter_basic/Remote_API/homework/features/home/data/data_sources/movie_remote_data_source.dart';
