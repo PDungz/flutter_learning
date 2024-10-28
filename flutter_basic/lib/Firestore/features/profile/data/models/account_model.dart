@@ -2,6 +2,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/account_entity.dart';
+
 part 'account_model.g.dart';
 
 @JsonSerializable()
@@ -44,7 +45,7 @@ class AccountModel extends AccountEntity {
   Map<String, dynamic> toJsonForNonNullItems() {
     Map<String, dynamic> result = {};
     if (avatarUrl != null) {
-      result['avatar_url'] = fullName;
+      result['avatar_url'] = avatarUrl;
     }
     if (fullName != null) {
       result['full_name'] = fullName;

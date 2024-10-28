@@ -1,0 +1,18 @@
+{
+  "local_language": "Español",
+  "upcoming": "Próximamente",
+  "now_in_cinemas": "En cines",
+  "profile_app_bar_title": "Pantalla de perfil",
+  "information": "Información",
+  "fullName": "Nombre completo",
+  "date_of_birth": "Fecha de nacimiento",
+  "phoneNumber": "Número de teléfono",
+  "email": "Correo electrónico",
+  "gender": "Género",
+  "male": "Masculino",
+  "female": "Femenino",
+  "other": "Otro",
+  "setting": "Configuración",
+  "language": "Idioma",
+  "save": "Guardar"
+}

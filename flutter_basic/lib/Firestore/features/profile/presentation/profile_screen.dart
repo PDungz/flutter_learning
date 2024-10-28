@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_basic/Firestore/features/profile/presentation/avatar_and_username_section.dart';
+import 'package:flutter_basic/l10n/generated/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/enums/status_state.dart';
 import '../../auth/login/widgets/loading_overlay.dart';
@@ -27,9 +28,11 @@ class ProfileScreen extends StatelessWidget {
               Scaffold(
                 appBar: AppBar(
                   backgroundColor: const Color(0xff1B2332),
-                  title: const Text(
-                    "Profile Screen",
-                    style: TextStyle(color: Colors.white),
+                  title: Center(
+                    child: Text(
+                      AppLocalizations.of(context)!.profile_app_bar_title,
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                   actions: [
                     IconButton(
@@ -51,21 +54,22 @@ class ProfileScreen extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     color: const Color(0xff181F2B),
-                    child: const SingleChildScrollView(
+                    child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          AvatarAndUsernameSection(),
-                          SizedBox(
+                          const AvatarAndUsernameSection(),
+                          const SizedBox(
                             height: 38,
                           ),
                           CustomTitleAndContentSection(
-                              title: "Information",
-                              content: InformationContent()),
-                          SizedBox(
+                              title: AppLocalizations.of(context)!.information,
+                              content: const InformationContent()),
+                          const SizedBox(
                             height: 32,
                           ),
                           CustomTitleAndContentSection(
-                              title: "Settings", content: SettingsContent()),
+                              title: AppLocalizations.of(context)!.setting,
+                              content: const SettingsContent()),
                         ],
                       ),
                     ),

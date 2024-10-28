@@ -32,12 +32,12 @@ class AccountFirestoreDataSourceImpl implements AccountFirestoreDataSource {
     DocumentSnapshot docSnapshot = await userDocRef.get();
     if (docSnapshot.exists) {
       //! Nếu tồn tại, thực hiện cập nhật (update)
-      await userDocRef.update(account.toJson());
+      await userDocRef.update(account.toJsonForNonNullItems());
       printS("Account Info updated!");
     } else {
       //! Nếu không tồn tại, thực hiện tạo mới (create)
-      await userDocRef.set(account.toJson());
-      printS("Account Info updated!");
+      await userDocRef.set(account.toJsonForNonNullItems());
+      printS("Account Info created!");
     }
   }
 }

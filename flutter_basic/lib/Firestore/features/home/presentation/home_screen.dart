@@ -1,13 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_basic/Firestore/core/services/injection_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/apis/dio_client.dart';
-import '../../../core/services/logger_service.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../core/utils/convert_util.dart';
-import '../data/datasources/movie_remote_data_source.dart';
-import '../data/repositories/movie_repository_impl.dart';
-import '../domain/usecases/movie_usecase.dart';
-import 'logic_holders/global_info_bloc/global_info_bloc.dart';
+import '../../../core/common/presentation/blocs/global_info_bloc/global_info_bloc.dart';
 import 'logic_holders/movie_info_bloc/movie_info_bloc.dart';
 import 'widgets/header_section.dart';
 import 'widgets/movie_item.dart';
@@ -25,8 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MovieInfoBloc>(
-      create: (context) => MovieInfoBloc(GetMovies(MovieRepositoryImpl(
-          remoteDataSource: MovieRemoteDataSourceImpl(dio: DioClient().dio))))
+      create: (context) => MovieInfoBloc(getIt()
+          // GetMovies(
+          //   MovieRepositoryImpl(
+          //       remoteDataSource:
+          //           MovieRemoteDataSourceImpl(dio: DioClient().dio)),
+          // ),
+          )
         ..add(LoadMovies()),
       child: Scaffold(
         body: Column(
@@ -50,16 +52,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           final upcommingMovies = state.upcommingMovies;
                           return BlocBuilder<GlobalInfoBloc, GlobalInfoState>(
                               builder: (_, state) {
-                            if (state is GlobalInfoLoaded) {
-                              final imageConfigInfo = state.imageConfigInfo;
+                            final imageConfigInfo = state.imageConfigInfo;
+                            if (imageConfigInfo != null) {
                               final listPosterImage = upcommingMovies
                                   .map((e) =>
-                                      imageConfigInfo!.baseUrl +
+                                      imageConfigInfo.baseUrl +
                                       imageConfigInfo
                                           .getPosterSizeText('w342') +
                                       e.posterPath)
                                   .toList();
-                              printI("List poster: $listPosterImage");
                               return UpcomingSection(
                                 listUpcommingMoviesPoster: listPosterImage,
                                 setStateFunc: (index) {
@@ -95,20 +96,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   //     ),
                   //   ),
                   // ),
-                  const SliverToBoxAdapter(
+                  SliverToBoxAdapter(
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Now in cinemas",
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.now_in_cinemas,
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 24,
                                 color: Colors.white),
                           ),
-                          Icon(
+                          const Icon(
                             Icons.search,
                             color: Color(0xff637394),
                             size: 28,
@@ -133,7 +134,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         return BlocBuilder<GlobalInfoBloc, GlobalInfoState>(
                           builder: (context, state) {
-                            if (state is GlobalInfoLoaded) {
+                            final imageConfigInfo = state.imageConfigInfo;
+                            if (imageConfigInfo != null) {
                               final imageConfigInfo = state.imageConfigInfo;
 
                               return SliverGrid.builder(
@@ -143,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 16,
                                     mainAxisSpacing: 16,
-                                    childAspectRatio: 163 / 282,
+                                    childAspectRatio: 163 / 320,
                                   ),
                                   itemBuilder: (_, index) {
                                     final filteredGenreList =

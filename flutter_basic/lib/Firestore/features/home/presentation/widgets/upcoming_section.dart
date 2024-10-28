@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../l10n/generated/app_localizations.dart';
 import 'movie_type_section.dart';
 
 class UpcomingSection extends StatelessWidget {
@@ -18,7 +19,7 @@ class UpcomingSection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: MovieTypeSection(
-          title: "Upcomming",
+          title: AppLocalizations.of(context)!.upcoming,
           child: CarouselSlider.builder(
             itemCount: listUpcommingMoviesPoster.length,
             itemBuilder: (context, currentIndex, pageViewIndex) => Container(

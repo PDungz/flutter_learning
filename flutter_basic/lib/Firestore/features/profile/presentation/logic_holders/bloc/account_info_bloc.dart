@@ -1,16 +1,22 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../../core/enums/status_state.dart';
 import '../../../../../core/services/logger_service.dart';
 import '../../../domain/entities/account_entity.dart';
 import '../../../domain/repositories/account_repository.dart';
+
 part 'account_info_event.dart';
 part 'account_info_state.dart';
 
 class AccountInfoBloc extends Bloc<AccountInfoEvent, AccountInfoState> {
   final AccountRepository repository;
+  final ImagePicker _picker = ImagePicker();
   AccountInfoBloc(this.repository) : super(const AccountInfoState()) {
     on<UpdateDob>((event, emit) {
       final localAccountInfo = state.updatedLocalAccountData;
@@ -44,9 +50,21 @@ class AccountInfoBloc extends Bloc<AccountInfoEvent, AccountInfoState> {
     on<SaveInfo>((event, emit) async {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId != null) {
-        final localAccountInfo = state.updatedLocalAccountData;
+        emit(state.copyWith(status: StatusState.loading));
+        final localImageFile = state.updatedLocalImageFile;
+        var localAccountInfo = state.updatedLocalAccountData;
+        if (localImageFile != null) {
+          final avatarUrl = await uploadImageToFirebase(
+              userId: userId, imageFile: localImageFile);
+          if (avatarUrl != null) {
+            localAccountInfo = localAccountInfo.copyWith(avatarUrl: avatarUrl);
+          }
+        }
+
         printS("[SaveInfo] Info is ready to save: $localAccountInfo");
         await repository.createOrUpdateAccountData(userId, localAccountInfo);
+        emit(state.copyWithoutLocalImageFile(
+            successMsg: "Lưu thông tin thành công", status: StatusState.idle));
         add(FetchAccountInfo());
       }
     });
@@ -66,6 +84,19 @@ class AccountInfoBloc extends Bloc<AccountInfoEvent, AccountInfoState> {
         emit(state.copyWith(status: StatusState.idle));
       }
     });
+    on<PickImage>((event, emit) async {
+      try {
+        final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+        if (pickedFile != null) {
+          emit(state.copyWith(updatedLocalImageFile: File(pickedFile.path)));
+        }
+      } catch (e) {
+        printE("[AccountInfoBloc] - [PickImage] error: $e");
+        emit(state.copyWith(errorMsg: "Đã xảy ra lỗi, ko thể lấy hình ảnh"));
+      } finally {
+        emit(state.copyWith(status: StatusState.idle));
+      }
+    });
   }
 
   bool get canUpdate {
@@ -75,10 +106,31 @@ class AccountInfoBloc extends Bloc<AccountInfoEvent, AccountInfoState> {
     final phoneNum = updatedAccountInfo.phoneNumber;
     final email = updatedAccountInfo.email;
     final gender = updatedAccountInfo.gender;
+    final updatedLocalImageFile = state.updatedLocalImageFile;
     return fullname != null ||
         dob != null ||
         phoneNum != null ||
         email != null ||
-        gender != null;
+        gender != null ||
+        updatedLocalImageFile != null;
+  }
+
+  Future<String?> uploadImageToFirebase(
+      {required String userId, required File imageFile}) async {
+    try {
+      // Tạo đường dẫn nơi lưu ảnh trong Firebase Storage
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('uploads/$userId');
+
+      // Upload ảnh lên Firebase Storage
+      await storageReference.putFile(imageFile);
+      // Chờ cho quá trình upload hoàn thành
+      // Lấy download url để hiển thị hình ảnh
+      String downloadURL = await storageReference.getDownloadURL();
+      return downloadURL;
+    } catch (e) {
+      printE('Upload failed: $e');
+      return null;
+    }
   }
 }
